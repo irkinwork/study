@@ -1,23 +1,24 @@
 module Exercise
   module Arrays
     class << self
-      def findMax(arr)
+      def find_max(arr)
         first, * = arr
-        def iter(coll, max)
+        iter = lambda { |coll, max|
           first, *rest = coll
-          return max if coll.length === 0
-          updatedMax = first > max ? first : max
-          iter(rest, updatedMax)
-        end
-        iter(arr, first)
+          return max if coll.empty?
+
+          updated_max = first > max ? first : max
+          iter.call(rest, updated_max)
+        }
+        iter.call(arr, first)
       end
 
       def replace(array)
-        max = findMax(array)
+        max = find_max(array)
         replaced = []
         array.each do |num|
-        newEl = num > 0 ? max : num;
-        replaced.push(newEl)
+          new_el = num.positive? ? max : num
+          replaced.push(new_el)
         end
         replaced
       end
@@ -25,31 +26,33 @@ module Exercise
       def find_index(arr, query)
         index = 0
         arr.each do
-          return index if arr[index] === query
+          return index if arr[index] == query
+
           index += 1
         end
-        return nil
+        nil
       end
 
       def include?(arr, query)
         arr.each do |el|
-          return true if el === query
+          return true if el == query
         end
-        return false
+        false
       end
 
-      def search(_array, _query)
-        return -1 if !include?(_array, _query)
-        iter = proc {
-          |arr|
+      def search(array, query)
+        return -1 unless include?(array, query)
+
+        iter = proc { |arr|
           half = arr.length / 2
-          middleIndex = half.integer? ? half : half.round()
-          middle = arr[middleIndex]
-          return find_index(_array, middle) if  middle === _query
-          newArr = middle > _query ? arr[0, middleIndex] : arr[middleIndex + 1, arr.length - 1]
-          return iter.call(newArr)
+          middle_index = half.integer? ? half : half.round
+          middle = arr[middle_index]
+          return find_index(array, middle) if middle == query
+
+          new_arr = middle > query ? arr[0, middle_index] : arr[middle_index + 1, arr.length - 1]
+          return iter.call(new_arr)
         }
-        return iter.call(_array)
+        iter.call(array)
       end
     end
   end
