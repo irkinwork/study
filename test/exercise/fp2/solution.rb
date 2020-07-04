@@ -5,7 +5,17 @@ module Exercise
       # Использовать свои написанные функции для реализации следующих - можно.
 
       # Написать свою функцию my_each
-      def my_each; end
+      def my_each
+        iter = lambda { |coll|
+          return self if coll.empty?
+
+          first, *rest = coll
+          yield first
+          iter.call(rest)
+        }
+
+        iter.call(self)
+      end
 
       # Написать свою функцию my_map
       def my_map; end
