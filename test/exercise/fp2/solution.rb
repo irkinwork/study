@@ -24,7 +24,18 @@ module Exercise
       def my_compact; end
 
       # Написать свою функцию my_reduce
-      def my_reduce; end
+      def my_reduce(init_acc = nil, &func)
+        iter = lambda { |acc, coll|
+          return acc if coll.empty?
+
+          first, *rest = coll
+          iter.call(func.call(acc, first), rest)
+        }
+        return iter.call(init_acc, self) unless init_acc.nil?
+
+        head, *tail = self
+        iter.call(head, tail)
+      end
     end
   end
 end
