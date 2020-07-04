@@ -24,7 +24,10 @@ module Exercise
       end
 
       # Написать свою функцию my_compact
-      def my_compact; end
+      def my_compact
+        iter = ->(acc, element) { element.nil? ? acc : acc << element }
+        MyArray.new(self).reduce(MyArray.new, &iter)
+      end
 
       # Написать свою функцию my_reduce
       def my_reduce(init_acc = nil, &func)
