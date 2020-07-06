@@ -6,10 +6,10 @@ module Exercise
 
       # Написать свою функцию my_each
       def my_each
-        iter = lambda { |coll|
-          return self if coll.empty?
+        iter = lambda { |arr|
+          return self if arr.empty?
 
-          first, *rest = coll
+          first, *rest = arr
           yield first
           iter.call(rest)
         }
@@ -26,15 +26,15 @@ module Exercise
       # Написать свою функцию my_compact
       def my_compact
         iter = ->(acc, element) { element.nil? ? acc : acc << element }
-        MyArray.new(self).reduce(MyArray.new, &iter)
+        MyArray.new(self).my_reduce(MyArray.new, &iter)
       end
 
       # Написать свою функцию my_reduce
       def my_reduce(init_acc = nil, &func)
-        iter = lambda { |acc, coll|
-          return acc if coll.empty?
+        iter = lambda { |acc, arr|
+          return acc if arr.empty?
 
-          first, *rest = coll
+          first, *rest = arr
           iter.call(func.call(acc, first), rest)
         }
         return iter.call(init_acc, self) unless init_acc.nil?
